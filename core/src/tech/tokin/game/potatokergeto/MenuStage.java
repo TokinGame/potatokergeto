@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuStage extends MyStage {
 
+    OneSpriteStaticActor kacsa;
+    float elapsedtime = 0;
 
 
     public MenuStage(Viewport viewport, Batch batch, Game game) {
@@ -19,14 +21,10 @@ public class MenuStage extends MyStage {
         super(viewport, batch, game);
         Gdx.input.setCatchBackKey(true);
 
-        addActor(new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK)){
-            @Override
-            protected void init() {
-                super.init();
-                setSize(100, 100);
-                setPosition(Globals.WORLD_WIDTH/2-this.getWidth()/2, Globals.WORLD_HEIGHT/2-this.getHeight()/2);
-            }
-        });
+        kacsa = new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK));
+        addActor(kacsa);
+        kacsa.setSize(100, 100);
+        kacsa.setPosition(Globals.WORLD_WIDTH/2-this.getWidth()/2, Globals.WORLD_HEIGHT/2-this.getHeight()/2);
     }
 
 
@@ -41,6 +39,18 @@ public class MenuStage extends MyStage {
         return false;
     }
 
+
+    @Override
+    public void draw() {
+        super.draw();
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        elapsedtime += delta;
+        kacsa.setRotation(-elapsedtime*60);
+    }
 
     public void init(){
 
