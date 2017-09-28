@@ -18,6 +18,15 @@ public class MenuStage extends MyStage {
 
         super(viewport, batch, game);
         Gdx.input.setCatchBackKey(true);
+
+        addActor(new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK)){
+            @Override
+            protected void init() {
+                super.init();
+                setSize(100, 100);
+                setPosition(Globals.WORLD_WIDTH/2-this.getWidth()/2, Globals.WORLD_HEIGHT/2-this.getHeight()/2);
+            }
+        });
     }
 
 
