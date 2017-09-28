@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 /**
  * Created by davim on 2016. 10. 07..
  */
@@ -16,6 +18,7 @@ public class MenuStage extends MyStage {
 
     OneSpriteStaticActor kacsa;
     float elapsedtime = 0;
+    ArrayList<OneSpriteStaticActor> piciKacsak = new ArrayList<OneSpriteStaticActor>();
 
     int rand(int a, int b){
         return (int)(Math.random()*(b-a+1)+a);
@@ -30,12 +33,19 @@ public class MenuStage extends MyStage {
         kacsa = new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK));
         addActor(kacsa);
         kacsa.setSize(100, 100);
-        kacsa.setPosition(Globals.WORLD_WIDTH/2-this.getWidth()/2, Globals.WORLD_HEIGHT/2-this.getHeight()/2);
+        kacsa.setPosition((Globals.WORLD_WIDTH/2)-(kacsa.getWidth()/2), (Globals.WORLD_HEIGHT/2)-(kacsa.getHeight()/2));
+        this.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                kacsa.setPosition(x-(kacsa.getWidth()/2),y-(kacsa.getHeight()/2));
+            }
+        });
         kacsa.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                addActor(new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK)){
+                piciKacsak.add(new OneSpriteStaticActor(Assets.manager.get(Assets.DUCK)){
                     @Override
                     protected void init() {
                         super.init();
@@ -43,8 +53,10 @@ public class MenuStage extends MyStage {
                         setPosition(rand(50, Globals.WORLD_WIDTH-50), rand(50, Globals.WORLD_HEIGHT-50));
                     }
                 });
+                addActor(piciKacsak.get(piciKacsak.size()-1));
             }
         });
+
     }
 
 
@@ -70,6 +82,9 @@ public class MenuStage extends MyStage {
         super.act(delta);
         elapsedtime += delta;
         kacsa.setRotation(-elapsedtime*60);
+        for (OneSpriteActor kaccss: piciKacsak) {
+            kaccss.setRotation(-elapsedtime*60);
+        }
     }
 
     public void init(){
